@@ -1,10 +1,14 @@
+
 #game-board {
+    width: 100%;
     display: grid;
-    position: absolute;
-    transform: translate(-50%, -50%); /* Align container - centre */
-    top: 50%; /* Align container - centre */
-    left: 50%; /* Align container - centre */
+  /*  position: absolute;*/
+    /*transform: translate(-50%, -50%);*/ /* Align container - centre */
+   /* top: 50%;*/ /* Align container - centre */
+  /*  left: 50%;*/ /* Align container - centre */
     grid-template-columns: repeat(3, auto);
+    place-content: center;/* this is for the grid: */
+    margin:20px 0;
 
 }
 
@@ -13,19 +17,51 @@
     width: 200px;
     height: 200px;
     cursor: pointer;
+    place-self: center;
 }
 
 
 .grid-cell:nth-child(-n + 3) { /* we need 1,2,3 therefore -n+3 if n+3 = 4,5,6 */
     border-top: none;
 }
+
 .grid-cell:nth-child(3n + 1) { /* При n = 0: 3 * 0 + 1 = 1. При n = 1: 3 * 1 + 1 = 4. При n = 2: 3 * 2 + 1 = 7*/
     border-left: none;
 }
+
 .grid-cell:nth-child(3n + 3) {
     border-right: none;
 }
 
 .grid-cell:nth-last-of-type(-n + 3) { /*nth-last-of-type selector can be used to start the count from the end and get the last 3 elements instead of the first 3.*/
     border-bottom: none;
+}
+
+.title, .game-over {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    font-size: 60px;
+}
+
+.restart {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    max-width: 20%;
+}
+
+.game-player-grid-container{
+    display: flex;
+justify-content: center;
+    gap: 500px;
+}
+
+.game-over{
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
