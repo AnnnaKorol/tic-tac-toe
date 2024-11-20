@@ -5,7 +5,9 @@ const player2 = document.querySelector(".player2");
 const gameOver = document.querySelector(".game-over-text");
 const restartBtn = document.querySelector(".restartBtn");
 
-const winConditions = [
+
+//Win combinations that can be valued as win in this game
+const winCombos = [
   //rows
   [0, 1, 2],
   [3, 4, 5],
@@ -19,23 +21,48 @@ const winConditions = [
   [2, 4, 6],
 ];
 
-let options = ["", "", "", "", "", "", "", "", ""];
+let scenarios = ["", "", "", "", "", "", "", "", ""];
 
 let currentPlayer = "X";
-let running = false;
+
+let playing = false;
 
 
-initializeGame();
+startGame();
 
-function initializeGame() {
+//!better not to use for Tuta:
+
+/* function startGame() {
     cells.forEach((cell) => cell.addEventListener("click", cellClicked));
     restartBtn.addEventListener("click", restartGame);
-    running = true;
+    playing = true;
+}; */
+
+//!if index is not important, for a simple enumeration of elements, easy to read, :
+
+/* function startGame() {
+    for (const cell of cells) {
+        cell.addEventListener("click", cellClicked);
+    }
+    restartBtn.addEventListener("click", restartGame);
+    playing = true;
+}; */
+
+
+//!if index is important, when iteration step control is required (++2), for array-like objects without built-in iteration support: 
+function startGame() {
+    for (let i = 0; i < cells.length; i++) {
+        cells[i].addEventListener("click", cellClicked);
+    }
+    restartBtn.addEventListener("click", restartGame);
+    playing = true;
 };
+    
+
 
 function cellClicked() {
     const cellIndex = this.getAttribute("cellIndex");
-    if (options[cellIndex] !== '' || !running) {
+    if (scenarios[cellIndex] !== '' || !playing) {
         return;
     }
 
@@ -45,7 +72,7 @@ function cellClicked() {
  };
 
 function updateCell(cell, index) {
-    options[index] = currentPlayer;
+    scenarios[index] = currentPlayer;
     cell.textContent = currentPlayer;
  };
 
@@ -55,30 +82,30 @@ function changePlayer() {
 };
 
 function checkWinner() {
-    let roundWon = false;
+    let gameWon = false;
 
-    for (let i = 0; i < winConditions.length; i++) {
-        const condition = winConditions[i];
-        const cellA = options[condition[0]];
-        const cellB = options[condition[1]];
-        const cellC = options[condition[2]];
+    for (let i = 0; i < winCombos.length; i++) {
+        const condition = winCombos[i];
+        const cellA = scenarios[condition[0]];
+        const cellB = scenarios[condition[1]];
+        const cellC = scenarios[condition[2]];
 
         if (cellA == "" || cellB == "" || cellC == "") {
             continue;
         }
 
         if (cellA == cellB && cellB == cellC) {
-            roundWon = true;
+            gameWon = true;
             break;
         }
     }
 
-    if (roundWon) {
+    if (gameWon) {
         gameOver.textContent = `${currentPlayer} wins!`;
-        running = false;
-    } else if(!options.includes("")) {
+        playing = false;
+    } else if(!scenarios.includes("")) {
         gameOver.textContent = "Draw";
-        running = false;
+        playing = false;
     } else {
         changePlayer();
     }
@@ -86,9 +113,11 @@ function checkWinner() {
 
 function restartGame() {
     currentPlayer = "X";
-    options = ["", "", "", "", "", "", "", "", ""];
+    scenarios = ["", "", "", "", "", "", "", "", ""];
     /*   statusText.textContent = `${currentPlayer}'s turns!`; */
-    cells.forEach(cell => cell.textContent = "");
-    running = true;
+    for (const cell of cells) {
+        cell.textContent = "";
+    }
+    playing = true;
     gameOver.textContent = "";
  };
