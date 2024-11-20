@@ -9,16 +9,16 @@ const restartBtn = document.querySelector(".restartBtn");
 //Win combinations that can be valued as win in this game
 const winCombos = [
   //rows
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
+  [0, 1, 2], //winCombos[0]:first row
+  [3, 4, 5], //winCombos[1]:second row
+  [6, 7, 8], //winCombos[2]:third row
   //column
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
+  [0, 3, 6], //winCombos[3]:first column
+  [1, 4, 7], //winCombos[4]:second column
+  [2, 5, 8], //winCombos[5]:third column
   //diagonal
-  [0, 4, 8],
-  [2, 4, 6],
+  [0, 4, 8], //winCombos[6]:main diagonal (left to right)
+  [2, 4, 6], //winCombos[7]:side diagonal (right to left)
 ];
 
 let scenarios = ["", "", "", "", "", "", "", "", ""];
@@ -59,9 +59,9 @@ function startGame() {
 };
     
 
-
+//if the cell was selected: 
 function cellClicked() {
-    const cellIndex = this.getAttribute("cellIndex");
+    const cellIndex = this.dataset.cellIndex;
     if (scenarios[cellIndex] !== '' || !playing) {
         return;
     }
@@ -76,41 +76,57 @@ function updateCell(cell, index) {
     cell.textContent = currentPlayer;
  };
 
+
+//
 function changePlayer() {
     currentPlayer = (currentPlayer == "X") ? "O" : "X";
 /*     statusText.textContent = `${currentPlayer}'s turn`; */
 };
 
+
+
+//Winner check in the game
 function checkWinner() {
-    let gameWon = false;
+  //check if there was a winning combinations - set a variable:
+  let gameWon = false;
 
-    for (let i = 0; i < winCombos.length; i++) {
-        const condition = winCombos[i];
-        const cellA = scenarios[condition[0]];
-        const cellB = scenarios[condition[1]];
-        const cellC = scenarios[condition[2]];
+  //CHeck all the winning combinations:
+  for (let i = 0; i < winCombos.length; i++) {
+      const condition = winCombos[i];
+      
+//Cell values of the current combination:
+    const cellA = scenarios[condition[0]];
+    const cellB = scenarios[condition[1]];
+    const cellC = scenarios[condition[2]];
 
-        if (cellA == "" || cellB == "" || cellC == "") {
-            continue;
-        }
-
-        if (cellA == cellB && cellB == cellC) {
-            gameWon = true;
-            break;
-        }
+      //Ignoring empty combinations
+    if (cellA == "" || cellB == "" || cellC == "") {
+      continue;
+      }
+      
+//Checking for equality of cell values if (div1=div2=div3):
+    if (cellA == cellB && cellB == cellC) {
+      gameWon = true;
+      break;
     }
+  }
 
-    if (gameWon) {
-        gameOver.textContent = `${currentPlayer} wins!`;
-        playing = false;
-    } else if(!scenarios.includes("")) {
-        gameOver.textContent = "Draw";
-        playing = false;
-    } else {
-        changePlayer();
-    }
- };
+   //Display the result: 
+  if (gameWon) {
+    gameOver.textContent = `${currentPlayer} wins!`;
+      playing = false;
 
+//check if draw:
+  } else if (!scenarios.includes("")) {
+    gameOver.textContent = "Draw";
+    playing = false;
+  } else {
+    changePlayer();
+  }
+};
+
+
+ //Restart button clicked function: 
 function restartGame() {
     currentPlayer = "X";
     scenarios = ["", "", "", "", "", "", "", "", ""];
