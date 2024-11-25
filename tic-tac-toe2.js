@@ -54,8 +54,8 @@ const Game = (() => {
   let players = [Player("Player O", "O"), Player("Player X", "X")]; // Initializing players
   let currentPlayerIndex = 0;
   let playing = false;                                              // Game flag
-  const currentPlayerSign = players[currentPlayerIndex].sign;
-
+/*   const currentPlayerSign = players[currentPlayerIndex].sign;
+ */
 
 
   const startGame = () => {
@@ -86,6 +86,8 @@ const Game = (() => {
 
   const checkWinner = () => {
 
+    const currentPlayerSign = players[currentPlayerIndex].sign;
+
     // Checking winning combinations
     for (const combo of winCombos) {  
       const [a, b, c] = combo; 
@@ -104,7 +106,7 @@ const Game = (() => {
 
 // Check for a tie
     if (!Gameboard.getBoard().includes("")) {
-      updateGameOverText("Draw!");               
+      updateGameOverText("Draw!");              
       playing = false;                           // Stop the game
     } else {
       currentPlayerIndex = (currentPlayerIndex + 1) % players.length; // Player change
