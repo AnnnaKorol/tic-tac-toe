@@ -62,6 +62,7 @@ const Game = (() => {
     Gameboard.reset();               // Reset field
     currentPlayerIndex = 0;          // Set the first player
     playing = true;                  // Game start
+    togglePlayerDisplay(true);       // Show players
     updatedisplayGame();             // Display game
     updateGameOverText("");          // Reset result text
   };
@@ -94,7 +95,9 @@ const Game = (() => {
         Gameboard.getBoard()[c] === currentPlayerSign
       ) {
         updateGameOverText(`${players[currentPlayerIndex].name} wins!`); // Announcing the winner
-        playing = false;                                                // Stop the game
+        togglePlayerDisplay(false); // Show players
+        playing = false;   
+
         return;
       }
     }
@@ -106,6 +109,16 @@ const Game = (() => {
     } else {
       currentPlayerIndex = (currentPlayerIndex + 1) % players.length; // Player change
        updatePlayerDisplay();
+    }
+  };
+
+
+  const togglePlayerDisplay = (show) => {
+    const playerElements = document.querySelectorAll('.player');
+    for (let i = 0; i < playerElements.length; i++) {
+      playerElements[i].style.display = show ? 'block' : 'none'; // Устанавливаем видимость
+
+      //style.display : https://www.w3schools.com/cssref/pr_class_display.php
     }
   };
 
@@ -125,7 +138,6 @@ const Game = (() => {
       }
     }
   };
-
 
 
   //Updating the display of the playing field on the screen

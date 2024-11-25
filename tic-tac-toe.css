@@ -81,3 +81,7 @@ justify-content: center;
 .inactive {
   color: black;
 }
+
+.game-over-text {
+    font-size: 40px;
+}
