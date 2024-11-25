@@ -106,7 +106,8 @@ const Game = (() => {
 
 // Check for a tie
     if (!Gameboard.getBoard().includes("")) {
-      updateGameOverText("Draw!");              
+      updateGameOverText("Draw!");    
+      togglePlayerDisplay(false);          
       playing = false;                           // Stop the game
     } else {
       currentPlayerIndex = (currentPlayerIndex + 1) % players.length; // Player change
